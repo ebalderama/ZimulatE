@@ -4,10 +4,10 @@
 
 Simulate random variables from zero-inflated distributions. Supported distributions include:
 
-	* zero-inflated Poisson
-	* zero-inflated negative binomial
-	* zero-inflated generalized Pareto
-	* zero-inflated log-normal
+* zero-inflated Poisson
+* zero-inflated negative binomial
+* zero-inflated generalized Pareto
+* zero-inflated log-normal
 
 ## Installation 
 
