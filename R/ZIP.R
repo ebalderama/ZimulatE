@@ -8,21 +8,36 @@
 #' @param theta zero-inflation parameter (probability of zeros)
 #' @param lambda expected Poisson count
 #' @param log,log.p logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.
-#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X ??? x]}, otherwise,
+#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
 #' \code{P[X > x]}.
 #' @return \code{dzip} gives the density, \code{pzip} gives the distribution function,
 #' \code{qzip} gives the quantile function, and \code{rzip} generates random deviates.
 #' @export dzip pzip qzip rzip
-#' @import stats
 
 dzip <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
-  return(0)
+  zeros <- theta * (x == 0)
+  d <- zeros + (1 - theta) * dpois(x, lambda)
+  if (log) {
+    return(log(d))
+  } else {
+    return(d)
+  }
 }
 
 pzip <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  return(0)
+  p <- theta + (1 - theta) * ppois(q, lambda)
+  
+  if (lower.tail == FALSE) {
+    p <- 1 - p
+  }
+  
+  if (log.p) {
+    p <- log(p)
+  }
+  
+  return(p)
 }
 
 qzip <-
