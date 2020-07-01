@@ -31,6 +31,7 @@ function(p, theta, mu = 1, sigma = 1, xi = 1, lower.tail = TRUE, log.p = FALSE) 
   return(0)
 }
 
+#----------- TODO: change to discrete ---------
 rzilnorm <-
 function(n, theta, meanlog = 0, sdlog = 1){
   zero   <- rbinom(n, 1, theta)
