@@ -10,17 +10,16 @@
 #' @param sigma (non-negative) scale parameter
 #' @param xi shape parameter
 #' @param log,log.p logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.
-#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X ??? x]}, otherwise,
+#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
 #' \code{P[X > x]}.
 #' @return \code{dzigpd} gives the density, \code{pzigpd} gives the distribution function,
 #' \code{qzigpd} gives the quantile function, and \code{rzigpd} generates random deviates.
 #' @export dzigpd pzigpd qzigpd rzigpd
-#' @import stats
 #' @import hurdlr
 
 dzigpd <-
 function(x, theta, mu = 1, sigma = 1, xi = 1, log = FALSE) {
-  return(0)
+  
 }
 
 pzigpd <-

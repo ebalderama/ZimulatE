@@ -15,25 +15,37 @@
 #' @export dhpois phpois qhpois rhpois
 #' @import hurdlr
 
-dhpois <- function(x, theta = 0.5, lambda = 1) {
-  return(0)
-}
-
-phpois <- function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  return(0)
-}
-
-qhpois <- function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  return(0)
-}
-
-rhpois <- function(n,theta=0.5,lambda=1){
+dhpois <-
+function(x, theta = 0.5, lambda = 1, log = FALSE) {
+  zindex <- x == 0
+  x[zindex] <- theta
+  x[-zindex] <- (1 - theta) * lambda**x[-zindex] / ( (exp(lambda) - 1) * factorial(x[-zindex]) )
   
-  zero <- rbinom(n,1,theta)
-  sum_zero<-sum(zero==1)
-  sum_non_zero<- n - sum_zero
+  if (log) {
+    return(x)
+  } else {
+    x
+  }
+}
+
+phpois <-
+function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   
-  z_trun<-sample(1:999999,sum_non_zero,replace = T, prob = dpois(1:999999,lambda))
+}
+
+qhpois <-
+function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
+  return(0)
+}
+
+rhpois <-
+function(n, theta=0.5, lambda=1){
+  
+  zero <- rbinom(n, 1, theta)
+  sum_zero <- sum(zero == 1)
+  sum_non_zero <- n - sum_zero
+  
+  z_trun <- sample(1:999999, sum_non_zero, replace = TRUE, prob = dpois(1:999999,lambda))
   
   output <- c(rep(0,sum_zero),z_trun)
   return(output)
