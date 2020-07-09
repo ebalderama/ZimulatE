@@ -19,9 +19,9 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
   zeros <- theta * (x == 0)
   d <- zeros + (1 - theta) * dpois(x, lambda)
   if (log) {
-    return(log(d))
+    log(d)
   } else {
-    return(d)
+    d
   }
 }
 
@@ -37,12 +37,26 @@ function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
     p <- log(p)
   }
   
-  return(p)
+  p
 }
 
 qzip <-
 function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-    return(0)
+  # does not yet handle multiple values of theta
+  
+  if (lower.tail == FALSE) {
+    p <- 1 - p
+  }
+  
+  # assuming log(p) is given, convert to p by exp(log(p))
+  if (log.p == TRUE) {
+    p <- exp(p)
+  }
+    pindex <- theta < p
+    res <- rep(NA_real_, length(p))
+    res[pindex] <- qpois((p[pindex] - theta) / (1 - theta), lambda)
+    res[is.na(res)] <- 0
+    res
 }
 
 rzip <-
@@ -50,5 +64,5 @@ function(n, theta = 0.5, lambda = 1){
   zero   <- rbinom(n, 1, theta)
   y      <- rpois(n, lambda)
   output <- ifelse(zero == 1,0 ,y)
-  return(output)
+  output
 }

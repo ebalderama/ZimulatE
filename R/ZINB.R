@@ -18,14 +18,15 @@
 
 dzinb <-
 function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
-  
-  d <- theta * (x == 0) + (1 - theta) * dnbinom(x, size = size, mu = mu)
+  zeros <- theta * (x == 0)
+  d <- zeros + (1 - theta) * dnbinom(x, size = size, mu = mu)
   
   if (log) {
-    d <- theta * (x == 0) + (1 - theta) * dnbinom(x, size = size, mu = mu, log = TRUE)
+    log(d)
   }
-  
-  return(d)
+  else {
+    d
+  }
 }
 
 pzinb <-
@@ -40,16 +41,27 @@ function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
     p <- log(p)
   }
   
-  return(p)
+  p
 }
 
 qzinb <-
 function(p, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
   
+  # does not yet handle multiple values of theta
+  
   if (lower.tail == FALSE) {
     p <- 1 - p
   }
   
+  # assuming log(p) is given, convert to p by exp(log(p))
+  if (log.p == TRUE) {
+    p <- exp(p)
+  }
+  pindex <- theta < p
+  res <- rep(NA_real_, length(p))
+  res[pindex] <- qnbinom((p[pindex] - theta) / (1 - theta), size, mu = mu)
+  res[is.na(res)] <- 0
+  res
   
 }
 
@@ -58,5 +70,5 @@ function(n, theta = 0.5, size = 1, mu = 1){
   zero   <- rbinom(n, 1, theta)
   y      <- rnbinom(n, size, mu = mu)
   output  <- ifelse(zero == 1, 0, y)
-  return(output)
+  output
 }
