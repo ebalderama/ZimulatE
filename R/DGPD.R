@@ -17,7 +17,12 @@
 
 ddgpd <-
 function(x, alpha=1, lambda=1, mu=0, log = FALSE) {
-  (1 + lambda * (x - mu))**-alpha - (1 + lambda * (x - mu + 1))**-alpha
+  # suport is x = mu, mu + 1, mu + 2, ...
+  support <- x >= mu
+  res <- rep(NA_integer_, length(x))
+  res[support] <- (1 + lambda * (x[support] - mu))**(-alpha) - (1 + lambda * (x[support] - mu + 1))**-alpha
+  res[is.na(res)] <- 0
+  res
 }
 
 pdgpd <-
@@ -50,6 +55,6 @@ function(p, alpha=1, lambda=1, mu=0, lower.tail = TRUE, log.p = FALSE) {
 }
 
 rdgpd <-
-function(n, alpha=1, lambda=1, mu=0,) {
-  
+function(n, alpha=1, lambda=1, mu=0) {
+  sample(1:999999, n ,replace = T, prob = ddgpd(1:999999, alpha, lambda, mu))
 }
