@@ -31,7 +31,7 @@ function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
 
 pzinb <-
 function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
-  p <- theta * (q) + (1 - theta) * pnbinom(x, size = size, mu = mu)
+  p <- theta * q + (1 - theta) * pnbinom(x, size = size, mu = mu)
   
   if (lower.tail) {
     p <- 1 - p

@@ -27,7 +27,10 @@ function(x, theta = 0.5, mu=0, scale=1, shape=1, log = FALSE) {
 
 phdgp <-
 function(q, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
-  return(0)
+  zindex <- q == 0
+  q[zindex] <- 0
+  q[!zindex] <- (1 - theta) * pdgp(x[!zindex], mu, scale, shape)
+  q
 }
 
 qhdgp <-
@@ -35,8 +38,6 @@ function(p, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALS
   return(0)
 }
 
-#------ TODO: Change to discrete -------------
-#GPD:(continuous)
 rhdgp <- function(n, theta = 0.5, mu = 0, scale = 1, shape = 1){
   
   zero <- rbinom(n, 1, theta)
