@@ -15,12 +15,13 @@
 #' @export dhpois phpois qhpois rhpois
 #' @import hurdlr
 
+
 dhpois <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
   zindex <- x == 0
   x[zindex] <- theta
-  x[-zindex] <- (1 - theta) * lambda**x[-zindex] / ( (exp(lambda) - 1) * factorial(x[-zindex]) )
-  
+  x[!zindex] <- (1 - theta) * dpois(x[!zindex], lambda) / (1 - dpois(0, lambda))
+    
   if (log) {
     return(x)
   } else {
@@ -30,7 +31,9 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
 
 phpois <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  
+  zindex <- q == 0
+  x[zindex] <- 0
+  x[-zindex] <- (1 - theta) * lambda**x[-zindex] / ( (exp(lambda) - 1) * factorial(x[-zindex]) )
 }
 
 qhpois <-
