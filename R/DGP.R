@@ -56,5 +56,5 @@ function(p, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
 
 rdgp <-
 function(n, mu=0, scale=1, shape=1) {
-  sample(1:999999, n ,replace = T, prob = ddgp(1:999999, mu, scale, shape))
+  sample(mu:(mu+999999), n ,replace = T, prob = ddgp(mu:(mu+999999), mu, scale, shape))
 }
