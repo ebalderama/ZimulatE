@@ -13,7 +13,7 @@
 #' @return \code{dhpois} gives the density, \code{phpois} gives the distribution function,
 #' \code{qhpois} gives the quantile function, and \code{rhpois} generates random deviates.
 #' @export dhpois phpois qhpois rhpois
-#' @import hurdlr
+#' @import hurdlr pracma
 
 
 dhpois <-
@@ -29,17 +29,33 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
   }
 }
 
+incgam2 <-
+function(x, a) {
+  # reverses the order of parameters to match with Mathematica
+  incgam(a, x)
+}
+
+cdf_ztpois <-
+function(x, theta, lambda) {
+  # use sapply, since incgam2 is not vectorized
+  numer <- (-1 + theta) * (gamma(1 + x) - exp(lambda) * sapply(1+x, incgam2, a = lambda))
+  denom <- (-1 + exp(lambda) ) * gamma(1 + x)
+  numer / denom
+}
+
 phpois <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   zindex <- q == 0
   q[zindex] <- 0
-  q[!zindex] <- (1 - theta) * lambda**q[!zindex] / ( (exp(lambda) - 1) * factorial(q[!zindex]) )
+  q[!zindex] <- cdf_ztpois(q[!zindex], theta, lambda)
+  q
 }
 
-qhpois <-
-function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  return(0)
-}
+#-------------- no closed-form expression? -------------
+#qhpois <-
+#function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
+#  return(0)
+#}
 
 rhpois <-
 function(n, theta=0.5, lambda=1){
