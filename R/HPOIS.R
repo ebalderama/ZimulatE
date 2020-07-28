@@ -32,8 +32,8 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
 phpois <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   zindex <- q == 0
-  x[zindex] <- 0
-  x[-zindex] <- (1 - theta) * lambda**x[-zindex] / ( (exp(lambda) - 1) * factorial(x[-zindex]) )
+  q[zindex] <- 0
+  q[!zindex] <- (1 - theta) * lambda**q[!zindex] / ( (exp(lambda) - 1) * factorial(q[!zindex]) )
 }
 
 qhpois <-
