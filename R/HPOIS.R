@@ -15,7 +15,6 @@
 #' @export dhpois phpois qhpois rhpois
 #' @import hurdlr pracma
 
-
 dhpois <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
   zindex <- x == 0
@@ -51,7 +50,7 @@ function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   q
 }
 
-#-------------- no closed-form expression? -------------
+#-------------- Maybe there's no closed-form expression? -------------
 #qhpois <-
 #function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
 #  return(0)

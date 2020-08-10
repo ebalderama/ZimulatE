@@ -33,10 +33,12 @@ function(q, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALS
   q
 }
 
-qhdgp <-
-function(p, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
-  return(0)
-}
+# -------- May not exist ------------- 
+
+#qhdgp <-
+#function(p, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
+#  return(0)
+#}
 
 rhdgp <- function(n, theta = 0.5, mu = 0, scale = 1, shape = 1){
   

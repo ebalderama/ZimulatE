@@ -63,6 +63,6 @@ rzip <-
 function(n, theta = 0.5, lambda = 1){
   zero   <- rbinom(n, 1, theta)
   y      <- rpois(n, lambda)
-  output <- ifelse(zero == 1,0 ,y)
+  output <- ifelse(zero == 1, 0 ,y)
   output
 }
