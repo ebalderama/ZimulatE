@@ -8,8 +8,7 @@
 #' @param n number of observations
 #' @param theta zero-generating parameter (probability of zeros)
 #' @param lambda expected Poisson count
-#' @param theta_1 
-#' @param mu location parameter
+#' @param theta_1 probability of a count at or above \code{mu}, conditional on non-zero count
 #' @param scale scale parameter
 #' @param shape shape parameter
 #' @param threshold
@@ -19,24 +18,25 @@
 #' @return \code{ddhpoisdgp} gives the density, \code{pdhpoisdgp} gives the distribution function,
 #' \code{qdhpoisdgp} gives the quantile function, and \code{rdhpoisdgp} generates random deviates.
 #' @export ddhpoisdgp pdhpoisdgp qdhpoisdgp rdhpoisdgp
-
-doubletruc <-
-function() {
-  
-}
+#' @import truncdist
 
 ddhpoisdgp <-
-function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, mu=0, scale=1, shape=1, threshold){
-  return(0)
+function(x, theta = 0.5, threshold, lambda = 1, theta_1 = 0.95, scale=1, shape=1){
+  tt <- numeric(length(x))
+  tt[x == 0] <- theta
+  tt[x >= 1 & x < threshold] <- 
+  (1 - theta) * (1 - theta_1) * ZimulatE::dtrunc(x, spec = "pois", a = 1, b = threshold, lambda = lambda)
+  tt[x >= threshold] <- (1 - theta) * theta_1 * ddgp(x[x >= threshold], mu = threshold, scale = scale, shape = shape)
+  return(tt)
 }
 
 pdhpoisdgp <-
-function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, mu=0, scale=1, shape=1, threshold){
+function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
   return(0)
 }
 
 qdhpoisdgp <-
-function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, mu=0, scale=1, shape=1, threshold){
+function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
   return(0)
 }
 

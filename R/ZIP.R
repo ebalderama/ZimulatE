@@ -14,6 +14,7 @@
 #' \code{qzip} gives the quantile function, and \code{rzip} generates random deviates.
 #' @export dzip pzip qzip rzip
 
+# density
 dzip <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
   zeros <- theta * (x == 0)
@@ -25,6 +26,7 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
   }
 }
 
+# cdf
 pzip <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   p <- theta + (1 - theta) * ppois(q, lambda)
@@ -40,6 +42,7 @@ function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   p
 }
 
+# quantile
 qzip <-
 function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   # does not yet handle multiple values of theta
@@ -59,10 +62,11 @@ function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
     res
 }
 
+# random generation
 rzip <-
 function(n, theta = 0.5, lambda = 1){
   zero   <- rbinom(n, 1, theta)
   y      <- rpois(n, lambda)
-  output <- ifelse(zero == 1, 0 ,y)
+  output <- ifelse(zero == 1, 0, y)
   output
 }

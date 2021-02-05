@@ -15,7 +15,7 @@
 #' @return \code{dhdgp} gives the density, \code{phdgp} gives the distribution function,
 #' \code{qhdgp} gives the quantile function, and \code{rhdgp} generates random deviates.
 #' @export dhdgp phdgp qhdgp rhdgp
-#' @import hurdlr
+#' @import hurdlr ddgp pdgp qdgp rdgp
 
 dhdgp <-
 function(x, theta = 0.5, mu=0, scale=1, shape=1, log = FALSE) {
@@ -29,7 +29,7 @@ phdgp <-
 function(q, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
   zindex <- q == 0
   q[zindex] <- 0
-  q[!zindex] <- (1 - theta) * pdgp(x[!zindex], mu, scale, shape)
+  q[!zindex] <- (1 - theta) * pdgp(q[!zindex], mu, scale, shape)
   q
 }
 
@@ -45,7 +45,7 @@ rhdgp <- function(n, theta = 0.5, mu = 0, scale = 1, shape = 1){
   zero <- rbinom(n, 1, theta)
   sum_zero <- sum(zero == 1)
   sum_non_zero <- n - sum_zero
-  z_trun <- rdgp(sum_non_zero, mu = 0.5, scale, shape)
+  z_trun <- rdgp(sum_non_zero, mu = 0, scale, shape)
   
   output <- c(rep(0, sum_zero), z_trun)
   output

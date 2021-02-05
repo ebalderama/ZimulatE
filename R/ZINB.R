@@ -62,7 +62,6 @@ function(p, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
   res[pindex] <- qnbinom((p[pindex] - theta) / (1 - theta), size, mu = mu)
   res[is.na(res)] <- 0
   res
-  
 }
 
 rzinb <-
