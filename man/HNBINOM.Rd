@@ -5,7 +5,7 @@
 \alias{dhnbinom}
 \title{Hurdle Model for Negative Binomial Distribution}
 \usage{
-dhnbinom(x, theta = 0.5, size = 1, mu = 1, log = FALSE)
+dhnbinom(x, theta = 0.5, size = 1, prob = 1, log = FALSE)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -14,7 +14,7 @@ dhnbinom(x, theta = 0.5, size = 1, mu = 1, log = FALSE)
 
 \item{size}{number of successes (dispersion parameter)}
 
-\item{mu}{mean parameter (alternative parameterization)}
+\item{prob}{probability of success in each trial. 0 < prob \code{\leq} 1}
 
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 
@@ -31,5 +31,5 @@ dhnbinom(x, theta = 0.5, size = 1, mu = 1, log = FALSE)
 }
 \description{
 Density, distribution function, quantile function and random generation for the hurdle model
-using negative binomial distribution with parameters \code{theta}, \code{size}, and \code{mu}.
+using negative binomial distribution with parameters \code{theta}, \code{size}, and \code{prob}.
 }
