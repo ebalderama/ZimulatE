@@ -20,7 +20,7 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
   tt <- rep(0, length(x))
   zindex <- x == 0
   tt[zindex] <- theta
-  tt[!zindex] <- (1 - theta) * dpois(tt[!zindex], lambda) / (1 - dpois(0, lambda))
+  tt[!zindex] <- (1 - theta) * dpois(tt[!zindex], lambda) / (1 - ppois(0, lambda))
     
   if (log) {
     return(tt)
@@ -59,3 +59,5 @@ function(n, theta=0.5, lambda=1){
   output <- c(rep(0,sum_zero),z_trun)
   return(output)
 }
+
+dmixt(1, 0.5, spec1="binom", arg1=list(size = 1, prob = 0.5), spec2="pois", arg2 = list(lambda=1))

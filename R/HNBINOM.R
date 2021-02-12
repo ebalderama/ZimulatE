@@ -21,7 +21,7 @@ function(x, theta = 0.5, size = 1, prob = 0.5, log = FALSE) {
   tt <- rep(0, length(x))
   zindex <- x == 0
   tt[zindex] <- theta
-  tt[!zindex] <- (1 - theta) * dnbinom(tt[!zindex], size = size, prob = prob) / (1 - dnbinom(0, size = size, prob = prob))
+  tt[!zindex] <- (1 - theta) * dnbinom(tt[!zindex], size = size, prob = prob) / (1 - pnbinom(0, size = size, prob = prob))
   
   if (log) {
     return(tt)

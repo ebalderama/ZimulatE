@@ -35,10 +35,10 @@ function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold
   return(0)
 }
 
-qdhpoisdgp <-
-function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
-  return(0)
-}
+# qdhpoisdgp <-
+# function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
+#   return(0)
+# }
 
 
 rdhpoisdgp <-
