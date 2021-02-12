@@ -17,37 +17,28 @@
 
 dhpois <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
+  tt <- rep(0, length(x))
   zindex <- x == 0
-  x[zindex] <- theta
-  x[!zindex] <- (1 - theta) * dpois(x[!zindex], lambda) / (1 - dpois(0, lambda))
+  tt[zindex] <- theta
+  tt[!zindex] <- (1 - theta) * dpois(tt[!zindex], lambda) / (1 - dpois(0, lambda))
     
   if (log) {
-    return(x)
+    return(tt)
   } else {
-    x
+    tt
   }
-}
-
-incgam2 <-
-function(x, a) {
-  # reverses the order of parameters to match with Mathematica
-  incgam(a, x)
-}
-
-cdf_ztpois <-
-function(x, theta, lambda) {
-  # use sapply, since incgam2 is not vectorized
-  numer <- (-1 + theta) * (gamma(1 + x) - exp(lambda) * sapply(1+x, incgam2, a = lambda))
-  denom <- (-1 + exp(lambda) ) * gamma(1 + x)
-  numer / denom
 }
 
 phpois <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  zindex <- q == 0
-  q[zindex] <- 0
-  q[!zindex] <- cdf_ztpois(q[!zindex], theta, lambda)
-  q
+  tt <- pmax(0, ppois(q, lambda = lambda) - dpois(0L, lambda = lambda)) /
+        ppois(0, lambda = lambda, lower.tail = FALSE) *
+        theta
+  zindex <- tt == 0L
+  tt[zindex] <- 0
+  tt <- tt + (1 - theta)
+  tt[q < 0] <- 0
+  tt
 }
 
 #-------------- Maybe there's no closed-form expression? -------------

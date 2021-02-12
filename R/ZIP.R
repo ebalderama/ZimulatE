@@ -17,29 +17,31 @@
 # density
 dzip <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
-  zeros <- theta * (x == 0)
-  d <- zeros + (1 - theta) * dpois(x, lambda)
+  tt <- rep(0, length(x))
+  zindex <- theta * (x == 0)
+  tt <- zindex + (1 - theta) * dpois(x, lambda)
   if (log) {
-    log(d)
+    log(tt)
   } else {
-    d
+    tt
   }
 }
 
 # cdf
 pzip <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
-  p <- theta + (1 - theta) * ppois(q, lambda)
+  tt <- rep(0, length(q))
+  tt <- theta + (1 - theta) * ppois(q, lambda)
   
   if (lower.tail == FALSE) {
-    p <- 1 - p
+    tt <- 1 - tt
   }
   
   if (log.p) {
-    p <- log(p)
+    tt <- log(tt)
   }
   
-  p
+  tt
 }
 
 # quantile

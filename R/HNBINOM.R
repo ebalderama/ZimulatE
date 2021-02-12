@@ -18,14 +18,15 @@
 
 dhnbinom <-
 function(x, theta = 0.5, size = 1, prob = 0.5, log = FALSE) {
+  tt <- rep(0, length(x))
   zindex <- x == 0
-  x[zindex] <- theta
-  x[!zindex] <- (1 - theta) * dnbinom(x[!zindex], size = size, prob = prob) / (1 - dnbinom(0, size = size, prob = prob))
+  tt[zindex] <- theta
+  tt[!zindex] <- (1 - theta) * dnbinom(tt[!zindex], size = size, prob = prob) / (1 - dnbinom(0, size = size, prob = prob))
   
   if (log) {
-    return(x)
+    return(tt)
   } else {
-    x
+    tt
   }
 }
 
@@ -38,6 +39,17 @@ function(x, theta = 0.5, size = 1, prob = 0.5, log = FALSE) {
 #   numer / denom
 # }
 
+phnbinom <-
+function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
+  tt <- pmax(0, pnbinom(q, size = size, mu = mu) - dnbinom(0L, size = size, mu = mu)) /
+    pnbinom(0, size = size, mu = mu, lower.tail = FALSE) *
+    theta
+  zindex <- tt == 0L
+  tt[zindex] <- 0
+  tt <- tt + (1 - theta)
+  tt[q < 0] <- 0
+  tt
+}
 
 
 # qhnbinom <-

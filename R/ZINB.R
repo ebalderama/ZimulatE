@@ -18,30 +18,32 @@
 
 dzinb <-
 function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
-  zeros <- theta * (x == 0)
-  d <- zeros + (1 - theta) * dnbinom(x, size = size, mu = mu)
+  tt <- rep(0, length(x))
+  zindex <- theta * (x == 0)
+  tt <- zindex + (1 - theta) * dnbinom(x, size = size, mu = mu)
   
   if (log) {
-    log(d)
+    log(tt)
   }
   else {
-    d
+    tt
   }
 }
 
 pzinb <-
 function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
-  p <- theta * q + (1 - theta) * pnbinom(x, size = size, mu = mu)
+  tt <- rep(0, length(q))
+  tt <- theta * q + (1 - theta) * pnbinom(x, size = size, mu = mu)
   
   if (lower.tail) {
-    p <- 1 - p
+    tt <- 1 - tt
   }
   
   if (log.p == TRUE) {
-    p <- log(p)
+    tt <- log(tt)
   }
   
-  p
+  tt
 }
 
 qzinb <-
