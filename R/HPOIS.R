@@ -34,7 +34,7 @@ function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
         (1 - theta)
   zindex <- tt == 0L
   tt[zindex] <- 0
-  tt <- tt + (1 - theta)
+  tt <- tt + theta
   tt[q < 0] <- 0
   tt
 }
@@ -57,5 +57,3 @@ function(n, theta=0.5, lambda=1){
   output <- c(rep(0,sum_zero),z_trun)
   return(output)
 }
-
-dmixt(1, 0.5, spec1="binom", arg1=list(size = 1, prob = 0.5), spec2="pois", arg2 = list(lambda=1))

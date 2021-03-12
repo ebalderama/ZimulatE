@@ -27,27 +27,16 @@ function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
   }
 }
 
-# Issue: possible that phnbinom returns a negative probability ----------
-# phnbinom <-
-# function(q, theta = 0.5, size = 1, prob = 1, lower.tail = TRUE, log.p = FALSE) {
-#   #hypergeometric2F1(12,1,5,0.5, log = FALSE)
-#   numer <- (-1 + theta) * ( 1 - prob**size - (1 - prob)**(1+q) * prob**size * choose(size + q, -1 + size) * f21hyper(1, 1 + size + q, 2 + q, 1 - prob))
-#   denom <- -1 + prob**size
-#   numer / denom
-# }
-
 phnbinom <-
 function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
   tt <- pmax(0, pnbinom(q, size = size, mu = mu) - dnbinom(0L, size = size, mu = mu)) /
-    pnbinom(0, size = size, mu = mu, lower.tail = FALSE) *
-    (1 - theta)
+    pnbinom(0, size = size, mu = mu, lower.tail = FALSE) * (1 - theta)
   zindex <- tt == 0L
   tt[zindex] <- 0
-  tt <- tt + (theta)
+  tt <- tt + theta
   tt[q < 0] <- 0
   tt
 }
-
 
 # qhnbinom <-
 # function(p, theta = 0.5, size = 1, prob = 1, lower.tail = TRUE, log.p = FALSE) {
