@@ -25,21 +25,27 @@ function(x, theta = 0.5, threshold, lambda = 1, theta_1 = 0.95, scale=1, shape=1
   tt <- numeric(length(x))
   tt[x == 0] <- theta
   tt[x >= 1 & x < threshold] <- 
-  (1 - theta) * (1 - theta_1) * ZimulatE::dtrunc(x, spec = "pois", a = 1, b = threshold, lambda = lambda)
+  (1 - theta) * (1 - theta_1) * ZimulatE::dtrunc(x[x >= 1 & x < threshold], spec = "pois", a = 1, b = threshold, lambda = lambda)
   tt[x >= threshold] <- (1 - theta) * theta_1 * ddgp(x[x >= threshold], mu = threshold, scale = scale, shape = shape)
   return(tt)
 }
 
 pdhpoisdgp <-
-function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
-  return(0)
+  function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE, threshold=3) {
+    tt <- rep(0, length(q))
+    middle <- pmax(0, ppois(q[q <= threshold - 1], lambda = lambda) - dpois(0L, lambda = lambda)) /
+      (ppois(threshold, lambda = lambda) - ppois(1, lambda = lambda) ) *
+      (1 - theta) * (1 - theta_1)
+    tt[q <= threshold - 1] <- middle
+    tt[q >= threshold] <- (1 - theta) * (theta_1) * (pdgp(q[q >= threshold], mu = threshold, scale = scale, shape = shape))
+    tt <- tt + theta
+    tt
 }
 
 # qdhpoisdgp <-
 # function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
 #   return(0)
 # }
-
 
 rdhpoisdgp <-
 function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){

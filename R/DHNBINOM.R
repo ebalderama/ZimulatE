@@ -9,6 +9,7 @@
 #' @param theta_1 probability of a count at or above \code{mu}, conditional on non-zero count
 #' @param size number of successes (dispersion parameter)
 #' @param prob probability of success in each trial. 0 < prob < 1
+#' @param threshold second hurdle
 #' @param log,log.p logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.
 #' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
 #' \code{P[X > x]}.
@@ -18,39 +19,39 @@
 #' @import hurdlr BMS
 
 ddhnbinom <-
-  function(x, theta = 0.5, theta_1 = 0.5, size = 1, mu = 1, log = FALSE) {
-    tt <- (1 - theta) * dnbinom(x, size = size, mu = mu) / (1 - pnbinom(0, size = size, mu = mu))
-    
-    
-    tt[zindex] <- theta
-    if (log) {
-      return(tt)
-    } else {
-      tt
-    }
-  }
-
-# Issue: possible that phnbinom returns a negative probability ----------
-# phnbinom <-
-# function(q, theta = 0.5, size = 1, prob = 1, lower.tail = TRUE, log.p = FALSE) {
-#   #hypergeometric2F1(12,1,5,0.5, log = FALSE)
-#   numer <- (-1 + theta) * ( 1 - prob**size - (1 - prob)**(1+q) * prob**size * choose(size + q, -1 + size) * f21hyper(1, 1 + size + q, 2 + q, 1 - prob))
-#   denom <- -1 + prob**size
-#   numer / denom
-# }
-
-pdhnbinom <-
-  function(q, theta = 0.5, theta_1 = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
-    tt <- pmax(0, pnbinom(q, size = size, mu = mu) - dnbinom(0L, size = size, mu = mu)) /
-      pnbinom(0, size = size, mu = mu, lower.tail = FALSE) *
-      theta
-    zindex <- tt == 0L
-    tt[zindex] <- 0
-    tt <- tt + (1 - theta)
-    tt[q < 0] <- 0
+  function(x, theta = 0.5, theta_1 = 0.5, size = 0.9, mu = 0.9, scale = 1, shape = 1, threshold, log = FALSE) {
+    tt <- numeric(length(x))
+    tt[x == 0] <- theta
+    tt[x >= 1 & x < threshold] <-
+      (1 - theta) * (1 - theta_1) * ZimulatE::dtrunc(x[x >= 1 & x < threshold], spec = "nbinom", a = 1, b = threshold, size = size, mu = mu)
+    tt[x >= threshold] <- (1 - theta) * theta_1 * ddgp(x[x >= threshold], mu = threshold, scale = scale, shape = shape)
     tt
   }
 
+pdhnbinom <-
+  function(q, theta = 0.5, theta_1 = 0.95, size = 0.9, mu = 0.9, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE, threshold) {
+    tt <- rep(0, length(q))
+    middle <- pmax(0, pnbinom(q[q <= threshold - 1], size = size, mu = mu) - dnbinom(0L, size = size, mu = mu)) /
+      (pnbinom(threshold, size = size, mu = mu) - pnbinom(1, size = size, mu = mu) ) *
+      (1 - theta) * (1 - theta_1)
+    tt[q <= threshold - 1] <- middle + theta
+    tt[q >= threshold] <- (1 - theta) * (theta_1) * (pdgp(q[q >= threshold], mu = threshold, scale = scale, shape = shape)) + theta
+    # tt <- (1 - theta) * (theta_1) * pmax(0, pdgp(q, mu = threshold, scale = scale, shape = shape) - ddgp(0, mu = threshold, scale = scale, shape = shape))
+    # tt[q > 0 & q <= threshold - 1] <- tt[q > 0 && q <= threshold - 1] + middle[q > 0 && q <= threshold - 1]
+    tt
+}
+
+# pdhpoisdgp <-
+#   function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE, threshold=3) {
+#     tt <- rep(0, length(q))
+#     middle <- pmax(0, ppois(q[q <= threshold - 1], lambda = lambda) - dpois(0L, lambda = lambda)) /
+#       (ppois(threshold, lambda = lambda) - ppois(1, lambda = lambda) ) *
+#       (1 - theta) * (1 - theta_1)
+#     tt[q <= threshold - 1] <- middle
+#     tt[q >= threshold] <- (1 - theta) * (theta_1) * (pdgp(q[q >= threshold], mu = threshold, scale = scale, shape = shape))
+#     tt <- tt + theta
+#     tt
+#   }
 
 # qdhnbinom <-
 # function(p, theta = 0.5, size = 1, prob = 1, lower.tail = TRUE, log.p = FALSE) {
