@@ -18,10 +18,8 @@
 dhpois <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
   tt <- rep(0, length(x))
-  zindex <- x == 0
-  tt[zindex] <- theta
-  tt[!zindex] <- (1 - theta) * dpois(tt[!zindex], lambda) / (1 - ppois(0, lambda))
-    
+  tt <- (1 - theta) * dpois(x, lambda = lambda) / ppois(0, lambda = lambda, lower.tail = FALSE)
+  tt[x == 0L] <- rep(theta, length(tt))[x == 0L]
   if (log) {
     return(tt)
   } else {
@@ -33,7 +31,7 @@ phpois <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   tt <- pmax(0, ppois(q, lambda = lambda) - dpois(0L, lambda = lambda)) /
         ppois(0, lambda = lambda, lower.tail = FALSE) *
-        theta
+        (1 - theta)
   zindex <- tt == 0L
   tt[zindex] <- 0
   tt <- tt + (1 - theta)
