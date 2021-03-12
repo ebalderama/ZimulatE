@@ -1,4 +1,4 @@
-dtrunctest <- function(x , spec, a = -Inf, b = Inf, ...)
+dtrunc <- function(x , spec, a = -Inf, b = Inf, ...)
 {
   tt <- rep(0, length(x))
   g <- get(paste("d", spec, sep = ""), mode = "function")

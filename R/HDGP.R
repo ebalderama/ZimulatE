@@ -27,10 +27,14 @@ function(x, theta = 0.5, mu=0, scale=1, shape=1, log = FALSE) {
 
 phdgp <-
 function(q, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
-  zindex <- q == 0
-  q[zindex] <- 0
-  q[!zindex] <- (1 - theta) * pdgp(q[!zindex], mu, scale, shape)
-  q
+  tt <- pmax(0, pdgp(q, mu = mu, scale = scale, shape = shape) - ddgp(0L, mu = mu, scale = scale, shape = shape)) /
+    pdgp(0, mu = mu, scale = scale, shape = shape, lower.tail = FALSE) *
+    (1 - theta)
+  zindex <- tt == 0L
+  tt[zindex] <- 0
+  tt <- tt + theta
+  tt[q < 0] <- 0
+  tt
 }
 
 # -------- May not exist ------------- 
