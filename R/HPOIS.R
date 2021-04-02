@@ -20,11 +20,6 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
   tt <- rep(0, length(x))
   tt <- (1 - theta) * dpois(x, lambda = lambda) / ppois(0, lambda = lambda, lower.tail = FALSE)
   tt[x == 0L] <- rep(theta, length(tt))[x == 0L]
-  if (log) {
-    return(tt)
-  } else {
-    tt
-  }
 }
 
 phpois <-
@@ -54,6 +49,6 @@ function(n, theta=0.5, lambda=1){
   
   z_trun <- sample(1:999999, sum_non_zero, replace = TRUE, prob = dpois(1:999999,lambda))
   
-  output <- c(rep(0,sum_zero),z_trun)
+  output <- c(rep(0,sum_zero), z_trun)
   return(output)
 }

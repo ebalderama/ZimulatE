@@ -19,11 +19,29 @@
 
 dhdgp <-
 function(x, theta = 0.5, mu=0, scale=1, shape=1, log = FALSE) {
-  zindex <- x == 0
-  x[zindex] <- theta
-  x[!zindex] <- (1 - theta) * ddgp(x[!zindex], mu, scale, shape)
-  x
+  # zindex <- x == 0
+  # x[zindex] <- theta
+  # x[!zindex] <- (1 - theta) * ddgp(x[!zindex], mu, scale, shape)
+  # x
+  
+  tt <- rep(0, length(x))
+  tt <- (1 - theta) * ddgp(x, mu = mu, scale = scale, shape = shape) / pdgp(0, mu = mu, scale = scale, shape = shape)
+  
+  tt[x == 0L] <- rep(theta, length(tt))[x == 0L]
+  tt
 }
+
+# dhpois <-
+#   function(x, theta = 0.5, lambda = 1, log = FALSE) {
+#     tt <- rep(0, length(x))
+#     tt <- (1 - theta) * dpois(x, lambda = lambda) / ppois(0, lambda = lambda, lower.tail = FALSE)
+#     tt[x == 0L] <- rep(theta, length(tt))[x == 0L]
+#     if (log) {
+#       return(tt)
+#     } else {
+#       tt
+#     }
+#   }
 
 phdgp <-
 function(q, theta = 0.5, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
@@ -49,8 +67,22 @@ rhdgp <- function(n, theta = 0.5, mu = 0, scale = 1, shape = 1){
   zero <- rbinom(n, 1, theta)
   sum_zero <- sum(zero == 1)
   sum_non_zero <- n - sum_zero
-  z_trun <- rdgp(sum_non_zero, mu = 0, scale, shape)
+  # z_trun <- rdgp(sum_non_zero, mu = mu, scale, shape)
+  z_trun <- sample(1:999999, sum_non_zero, replace = TRUE, prob = ddgp(1:999999, mu = mu, scale = scale, shape = shape))
   
   output <- c(rep(0, sum_zero), z_trun)
   output
 }
+
+rhpois <-
+  function(n, theta=0.5, lambda=1){
+    
+    zero <- rbinom(n, 1, theta)
+    sum_zero <- sum(zero == 1)
+    sum_non_zero <- n - sum_zero
+    
+    z_trun <- sample(1:999999, sum_non_zero, replace = TRUE, prob = dpois(1:999999,lambda))
+    
+    output <- c(rep(0,sum_zero),z_trun)
+    return(output)
+  }

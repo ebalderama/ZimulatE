@@ -20,27 +20,43 @@
 #' @export ddhpoisdgp pdhpoisdgp qdhpoisdgp rdhpoisdgp
 #' @import truncdist
 
+# ddhpoisdgp <-
+# function(x, theta = 0.5, threshold, lambda = 1, theta_1 = 0.95, scale=1, shape=1){
+#   tt <- numeric(length(x))
+#   tt[x == 0] <- theta
+#   tt[x >= 1 & x < threshold] <- 
+#   (1 - theta) * (1 - theta_1) * ZimulatE::dtrunc(x[x >= 1 & x < threshold], spec = "pois", a = 1, b = threshold, lambda = lambda)
+#   tt[x >= threshold] <- (1 - theta) * theta_1 * ddgp(x[x >= threshold], mu = threshold, scale = scale, shape = shape)
+#   return(tt)
+# }
+
 ddhpoisdgp <-
-function(x, theta = 0.5, threshold, lambda = 1, theta_1 = 0.95, scale=1, shape=1){
-  tt <- numeric(length(x))
-  tt[x == 0] <- theta
-  tt[x >= 1 & x < threshold] <- 
-  (1 - theta) * (1 - theta_1) * ZimulatE::dtrunc(x[x >= 1 & x < threshold], spec = "pois", a = 1, b = threshold, lambda = lambda)
-  tt[x >= threshold] <- (1 - theta) * theta_1 * ddgp(x[x >= threshold], mu = threshold, scale = scale, shape = shape)
-  return(tt)
+  function(x, theta = 0.5, threshold = 3, lambda = 1, theta_1 = 0.1, scale=1, shape=1){
+    tt <- numeric(length(x))
+    tt[x == 0] <- theta
+    tt[x >= 1 & x < threshold] <- 
+      (1 - theta) * (1 - theta_1) * dpois(x[x >= 1 & x < threshold], lambda = lambda) / (ppois(threshold - 1, lambda = lambda) - ppois(0, lambda = 1))
+    tt[x >= threshold] <- (1 - theta) * theta_1 * ddgp(x[x >= threshold], mu = threshold, scale = scale, shape = shape)
+    return(tt)
 }
 
-pdhpoisdgp <-
-  function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE, threshold=3) {
-    tt <- rep(0, length(q))
-    middle <- pmax(0, ppois(q[q <= threshold - 1], lambda = lambda) - dpois(0L, lambda = lambda)) /
-      (ppois(threshold, lambda = lambda) - ppois(1, lambda = lambda) ) *
-      (1 - theta) * (1 - theta_1)
-    tt[q <= threshold - 1] <- middle
-    tt[q >= threshold] <- (1 - theta) * (theta_1) * (pdgp(q[q >= threshold], mu = threshold, scale = scale, shape = shape))
-    tt <- tt + theta
-    tt
+pdhpoisdgp <- function(q, theta = 0.5, lambda = 1, threshold = 3, theta_1 = 0.1, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE) {
+  tt <- rep(0, length(q))
+  tt <- cumsum(ddhpoisdgp(q, theta = theta, threshold = threshold, lambda = lambda, theta_1 = theta_1, scale = scale, shape = shape))
+  tt
 }
+
+# pdhpoisdgp <-
+#   function(q, theta = 0.5, lambda = 1, theta_1 = 0.95, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE, threshold=3) {
+#     tt <- rep(0, length(q))
+#     middle <- pmax(0, ppois(q[q <= threshold - 1], lambda = lambda) - dpois(0L, lambda = lambda)) /
+#       (ppois(threshold, lambda = lambda) - ppois(1, lambda = lambda) ) *
+#       (1 - theta) * (1 - theta_1)
+#     tt[q <= threshold - 1] <- middle
+#     tt[q >= threshold] <- (1 - theta) * (theta_1) * (pdgp(q[q >= threshold], mu = threshold, scale = scale, shape = shape))
+#     tt <- tt + theta
+#     tt
+# }
 
 # qdhpoisdgp <-
 # function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
@@ -48,7 +64,7 @@ pdhpoisdgp <-
 # }
 
 rdhpoisdgp <-
-function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold){
+function(n, theta = 0.5, lambda = 1, theta_1 = 0.1, scale=1, shape=1, threshold = 3){
   
   # theta_1 : given a postive value, there is a 0.95 prob. it is from the pois.
   
@@ -59,11 +75,11 @@ function(n, theta = 0.5, lambda = 1, theta_1 = 0.95, scale=1, shape=1, threshold
   n_middle <- sum(middle == 1)
   n_last <- n - sum_zero - n_middle #ok
   
-  #z_trun <- rztpois(n_middle, lambda = lambda) 
+  #z_trun <- rztpois(n_middle, lambda = lambda)
   z_trun <- sample(1:(threshold-1), n_middle, replace = TRUE, 
                  prob = (dpois(1:(threshold-1),lambda)/(ppois(threshold-1,lambda) - ppois(0,lambda))))
   
-  y2 <- rdgp(n_last, mu = threshold, scale, shape)
+  y2 <- rdgp(n_last, mu = threshold, scale = scale, shape = shape)
   
   output <- c(rep(0, sum_zero), z_trun, y2)
   output

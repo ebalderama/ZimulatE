@@ -1,0 +1,80 @@
+---
+title: "Scratch Work"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(ZimulatE)
+library(gridExtra)
+```
+
+# hurdle DGP
+
+```{r}
+p1<- ggplot() + geom_bar(aes(x = rhdgp(250), y = ..prop.., group = 1), stat = 'count')
+p1
+
+p2<- ggplot() + geom_point(aes(x = 0:8, y = dhdgp(0:8)))
+
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+# double-hurdle Poisson
+
+```{r}
+# hist(rdhpoisdgp(9999))
+p1 <- ggplot() + 
+  geom_bar(mapping = aes(x = rdhpoisdgp(999), y = ..prop.., group = 1), stat = "count")
+
+p2<- ggplot() + geom_point(aes(x = 0:10, y = ddhpoisdgp(0:10)))
+
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+# hurdle DGP
+
+```{r}
+p1<- ggplot() +
+  geom_bar(aes(x = rdgp(250), y = ..prop.., group = 1), stat = 'count') +
+  geom_point(aes(x = 0:8, y = ddgp(0:8)), colour = "red")
+p1 + ggtitle("DGP: Simulated Values with Density")
+
+p2<- ggplot() + geom_point(aes(x = 0:8, y = ddgp(0:8)))
+
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+
+# hurdle negative binomial
+
+```{r}
+p1 <- ggplot() + 
+  geom_bar(mapping = aes(x = rhnbinom(999), y = ..prop.., group = 1), stat = "count")
+
+p2<- ggplot() + geom_point(aes(x = 0:10, y = dhnbinom(0:10)))
+
+grid.arrange(p1, p2, ncol = 2)
+
+```
+
+# hurdle negative binomial
+
+```{r}
+p1 <- ggplot() + 
+  geom_bar(mapping = aes(x = rdhnbinom(250), y = ..prop.., group = 1), stat = "count")
+
+p2<- ggplot() + geom_point(aes(x = 0:10, y = ddhnbinom(0:10)))
+
+grid.arrange(p1, p2, ncol = 2)
+
+```

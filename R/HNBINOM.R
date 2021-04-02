@@ -17,8 +17,8 @@
 #' @import hurdlr BMS
 
 dhnbinom <-
-function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
-  tt <- (1 - theta) * dnbinom(x, size = size, mu = mu) / (1 - pnbinom(0, size = size, mu = mu))
+function(x, theta = 0.5, size = 1, prob = 0.5, log = FALSE) {
+  tt <- (1 - theta) * dnbinom(x, size = size, prob = prob) / (1 - pnbinom(0, size = size, prob = prob))
   tt[x == 0L] <- rep(theta, length(tt))[x == 0L]
   if (log) {
     return(tt)
@@ -28,8 +28,8 @@ function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
 }
 
 phnbinom <-
-function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
-  tt <- pmax(0, pnbinom(q, size = size, mu = mu) - dnbinom(0L, size = size, mu = mu)) /
+function(q, theta = 0.5, size = 1, prob = 0.5, lower.tail = TRUE, log.p = FALSE) {
+  tt <- pmax(0, pnbinom(q, size = size, prob = prob) - dnbinom(0L, size = size, prob = prob)) /
     pnbinom(0, size = size, mu = mu, lower.tail = FALSE) * (1 - theta)
   zindex <- tt == 0L
   tt[zindex] <- 0
@@ -43,11 +43,11 @@ function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
 #   return(0)
 # }
 
-rhnbinom <- function(n, theta = 0.5, size = 1,prob = 1) {
-  zero   <- rbinom(n,1,theta)
+rhnbinom <- function(n, theta = 0.5, size = 1, prob = 0.5) {
+  zero   <- rbinom(n, 1, theta)
   sum_zero <- sum(zero)
   sum_non_zero <- n-sum_zero
-  z_trun<-sample(1:999999,sum_non_zero,replace = T, prob = dnbinom(1:999999,size = size, prob = prob))
+  z_trun <- sample(1:999999, sum_non_zero, replace = TRUE, prob = dnbinom(1:999999, size = size, prob = prob))
   output <- c(rep(0,sum_zero),z_trun)
   return(output)
 }

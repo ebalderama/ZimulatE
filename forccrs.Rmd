@@ -1,0 +1,45 @@
+---
+title: "For CCRS"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library("tidyverse")
+library("ZimulatE")
+```
+
+```{r}
+fish <- read.csv("https://stats.idre.ucla.edu/stat/data/fish.csv")
+fish <- within(fish, {
+    nofish <- factor(nofish)
+    livebait <- factor(livebait)
+    camper <- factor(camper)
+})
+glimpse(fish)
+```
+
+```{r}
+ggplot(fish, aes(count)) +
+  geom_histogram()
+```
+
+```{r}
+ggplot(fish, aes(y = count)) +
+  geom_violin()
+```
+
+```{r}
+fish %>%
+  select(count) %>%
+  ggplot() + geom_bar(aes(count)) +
+  ggtitle("Barplot for Number of Fish Caught") +
+  xlab("Number of Fish Caught") +
+  ylab("Count")
+```
+

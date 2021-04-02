@@ -20,7 +20,7 @@ function(x, mu=0, scale=1, shape=1, log = FALSE) {
   # suport is x = mu, mu + 1, mu + 2, ...
   support <- x >= mu
   res <- rep(NA_integer_, length(x))
-  res[support] <- (1 + scale * (x[support] - mu))**(-shape) - (1 + scale * (x[support] - mu + 1))**-shape
+  res[support] <- (1 + scale * (x[support] - mu))**(-shape) - (1 + scale * (x[support] - mu + 1))**(-shape)
   res[is.na(res)] <- 0
   res
 }
@@ -56,5 +56,5 @@ function(p, mu=0, scale=1, shape=1, lower.tail = TRUE, log.p = FALSE) {
 
 rdgp <-
 function(n, mu=0, scale=1, shape=1) {
-  sample(mu:(mu+999999), n ,replace = T, prob = ddgp(mu:(mu+999999), mu, scale, shape))
+  sample(mu:(mu+999999), n ,replace = TRUE, prob = ddgp(mu:(mu+999999), mu = mu, scale = scale, shape = shape))
 }
