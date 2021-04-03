@@ -43,3 +43,33 @@ fish %>%
   ylab("Count")
 ```
 
+```{r}
+rand_pois <- data.frame("count" = rpois(250, lambda = 1), "key" = rep("pois", 250))
+rand_nbinom <- data.frame("count" = rnbinom(250, size = 1, prob = 0.5), "key" = rep("nbinom", 250))
+rand_dgp <- data.frame("count" = rdgp(250), "key" = rep("dgp", 250))
+rand_hpois <- data.frame("count" = rhpois(250, lambda = 1), "key" = rep("hpois", 250))
+rand_hnbinom <- data.frame("count" = rhnbinom(250, theta = 0.5, size = 1, prob = 0.5), "key" = rep("hnbinom", 250))
+rand_hdgp <- data.frame("count" = rhdgp(250), "key" = rep("hdgp", 250))
+rand_dhpoisdgp <- data.frame("count" = rdhpoisdgp(250, lambda = 1, threshold = 3), "key" = rep("dhpois", 250))
+rand_dhnbiom <- data.frame("count" = rdhnbinom(250), "key" = rep("dhnbinom", 250))
+```
+
+```{r}
+orig.data <- data.frame("count" = fish$count, "key" = rep("original", 250))
+fish.violin <- rbind(orig.data, rand_pois,
+rand_nbinom,
+rand_dgp,
+rand_hpois,
+rand_hnbinom,
+rand_hdgp,
+rand_dhpoisdgp,
+rand_dhnbiom)
+```
+
+```{r}
+fish.violin %>% 
+  ggplot() +
+  geom_violin(aes(x = key, y = count + 1)) +
+  scale_y_log10()
+```
+
