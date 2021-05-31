@@ -1,0 +1,140 @@
+---
+title: "For Presentation"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+
+
+
+
+
+
+
+
+
+# Load R packages
+
+```{r}
+library("tidyverse")
+library("ZimulatE")
+```
+
+# Load and clean fish dataset
+
+```{r}
+fish <- read.csv("https://stats.idre.ucla.edu/stat/data/fish.csv")
+fish <- within(fish, {
+    nofish <- factor(nofish)
+    livebait <- factor(livebait)
+    camper <- factor(camper)
+})
+
+glimpse(fish)
+```
+
+```{r}
+ggplot(fish, aes(count)) +
+  geom_histogram()
+```
+
+```{r}
+fish %>%
+  select(count) %>%
+  ggplot() + geom_bar(aes(count)) +
+  ggtitle("Barplot for Number of Fish Caught") +
+  xlab("Number of Fish Caught") +
+  ylab("Count")
+```
+
+```{r}
+rand_pois <- data.frame("count" = rpois(250, lambda = 1), "key" = rep("pois", 250))
+rand_nbinom <- data.frame("count" = rnbinom(250, size = 1, prob = 0.5), "key" = rep("nbinom", 250))
+rand_dgp <- data.frame("count" = rdgp(250), "key" = rep("dgp", 250))
+rand_hpois <- data.frame("count" = rhpois(250, lambda = 1), "key" = rep("hpois", 250))
+rand_hnbinom <- data.frame("count" = rhnbinom(250, theta = 0.5, size = 1, prob = 0.5), "key" = rep("hnbinom", 250))
+rand_hdgp <- data.frame("count" = rhdgp(250), "key" = rep("hdgp", 250))
+rand_dhpoisdgp <- data.frame("count" = rdhpoisdgp(250, lambda = 1, threshold = 3), "key" = rep("dhpois", 250))
+rand_dhnbiom <- data.frame("count" = rdhnbinom(250), "key" = rep("dhnbinom", 250))
+```
+
+```{r}
+orig.data <- data.frame("count" = fish$count, "key" = rep("original", 250))
+fish.violin <- rbind(orig.data, rand_pois,
+rand_nbinom,
+rand_dgp,
+rand_hpois,
+rand_hnbinom,
+rand_hdgp,
+rand_dhpoisdgp,
+rand_dhnbiom)
+```
+
+```{r}
+
+ggplot() +
+  geom_bar(aes(fish$count)) +
+  ggtitle("Barplot for Number of Fish Caught") +
+  xlab("Number of Fish Caught") +
+  ylab("Count")
+
+ggplot() +
+  geom_boxplot(aes(y = fish$count)) +
+  ggtitle("Boxplot for Number of Fish Caught") +
+  xlab("Number of Fish Caught") +
+  ylab("Count")
+```
+
+
+
+
+
+
+
+
+
+```{r}
+fish.violin %>% 
+  ggplot() +
+  geom_violin(aes(x = key, y = count)) +
+  ggtitle("Violin Plot of Fish and Simulations") +
+  xlab("Data Source") +
+  ylab("Count")
+
+fish.violin %>% 
+  ggplot() +
+  geom_violin(aes(x = key, y = count + 1)) +
+  scale_y_log10() +
+  ggtitle("Violin Plot of Fish and Simulations (log(count + 1))") +
+  xlab("Data Source") +
+  ylab("Count")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+ggplot() +
+  geom_point(aes(1:250, rand_pois$count))
+
+length(rand_pois$count)
+
+plot(fish$count)
+plot(density(fish$count))
+hist(fish$count)
+```
+
+# 

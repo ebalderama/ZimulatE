@@ -5,37 +5,65 @@ editor_options:
   chunk_output_type: console
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+```{r}
+library(gridExtra)
+library("ggplot2")
+library("ZimulatE")
+```
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+# Demonstration of calling functions for double-hurdle Poisson
 
 ```{r}
-library(tidyverse)
-library(ZimulatE)
-library(gridExtra)
+#find the value of a double-hurdle Poisson distribution pmf at x=3
+ddhpoisdgp(x = 3, theta = 0.5, threshold = 3, lambda = 1, theta_1 = 0.1, scale = 1, shape = 1)
+
+# find the value of the area to the left of q = 5
+pdhpoisdgp(q = 5, theta = 0.5, lambda = 1, threshold = 3, theta_1 = 0.1, scale = 1, shape = 1)
+
+# randomly generate 50 values from the specified double-hurdle Poisson distribution
+rdhpoisdgp(n = 50, theta = 0.5, lambda = 1, theta_1 = 0.1, threshold = 3, scale = 1, shape = 1)
 ```
+
+
+
+
+
 
 # hurdle DGP
 
 ```{r}
-p1<- ggplot() + geom_bar(aes(x = rhdgp(250), y = ..prop.., group = 1), stat = 'count')
-p1
+p1 <- ggplot() + geom_bar(aes(x = rhdgp(250), y = ..prop.., group = 1), stat = 'count')
 
-p2<- ggplot() + geom_point(aes(x = 0:8, y = dhdgp(0:8)))
+p2 <- ggplot() + geom_point(aes(x = 0:8, y = dhdgp(0:8)))
 
+# graphs the plots side by side
 grid.arrange(p1, p2, ncol = 2)
 
 ```
 
+```{r}
+# overlap the plots
+ggplot() +
+  geom_bar(aes(x = rhdgp(250), y = ..prop.., group = 1), stat = 'count') +
+  geom_point(aes(x = 0:8, y = dhdgp(0:8)), colour = "red")
+```
+
+
+
+
+
+
+
 # double-hurdle Poisson
 
 ```{r}
-# hist(rdhpoisdgp(9999))
 p1 <- ggplot() + 
   geom_bar(mapping = aes(x = rdhpoisdgp(999), y = ..prop.., group = 1), stat = "count")
 
-p2<- ggplot() + geom_point(aes(x = 0:10, y = ddhpoisdgp(0:10)))
+p2 <- ggplot() + geom_point(aes(x = 0:10, y = ddhpoisdgp(0:10)))
 
+# graphs the plots side by side
 grid.arrange(p1, p2, ncol = 2)
 
 ```

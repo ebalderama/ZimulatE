@@ -34,7 +34,7 @@ function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   tt
 }
 
-#-------------- Maybe there's no closed-form expression? -------------
+#-------------- Maybe, there's no closed-form expression -------------
 #qhpois <-
 #function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
 #  return(0)

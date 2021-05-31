@@ -2,29 +2,35 @@
 % Please edit documentation in R/DHPOIS.R
 \name{DHPOIS}
 \alias{DHPOIS}
-\alias{doubletruc}
+\alias{ddhpoisdgp}
 \title{Double-Hurdle Poisson}
 \usage{
-doubletruc()
+ddhpoisdgp(
+  x,
+  theta = 0.5,
+  threshold = 3,
+  lambda = 1,
+  theta_1 = 0.1,
+  scale = 1,
+  shape = 1
+)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
-
-\item{p}{vector of probabilities}
-
-\item{n}{number of observations}
 
 \item{theta}{zero-generating parameter (probability of zeros)}
 
 \item{lambda}{expected Poisson count}
 
-\item{theta_1}{}
-
-\item{mu}{location parameter}
+\item{theta_1}{probability of a count at or above \code{mu}, conditional on non-zero count}
 
 \item{scale}{scale parameter}
 
 \item{shape}{shape parameter}
+
+\item{p}{vector of probabilities}
+
+\item{n}{number of observations}
 
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 

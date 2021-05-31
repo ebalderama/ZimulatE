@@ -36,11 +36,10 @@ pdhnbinom <-
       (1 - theta) * (1 - theta_1)
     tt[q <= threshold - 1] <- middle + theta
     tt[q >= threshold] <- (1 - theta) * (theta_1) * (pdgp(q[q >= threshold], mu = threshold, scale = scale, shape = shape)) + theta
-    # tt <- (1 - theta) * (theta_1) * pmax(0, pdgp(q, mu = threshold, scale = scale, shape = shape) - ddgp(0, mu = threshold, scale = scale, shape = shape))
-    # tt[q > 0 & q <= threshold - 1] <- tt[q > 0 && q <= threshold - 1] + middle[q > 0 && q <= threshold - 1]
     tt
 }
 
+# ----- May not exist ------
 # qdhnbinom <-
 # function(p, theta = 0.5, size = 1, prob = 1, lower.tail = TRUE, log.p = FALSE) {
 #   return(0)
