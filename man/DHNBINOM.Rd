@@ -3,6 +3,8 @@
 \name{DHNBINOM}
 \alias{DHNBINOM}
 \alias{ddhnbinom}
+\alias{pdhnbinom}
+\alias{rdhnbinom}
 \title{Double-Hurdle Model for Negative Binomial Distribution}
 \usage{
 ddhnbinom(
@@ -16,6 +18,30 @@ ddhnbinom(
   threshold = 3,
   log = FALSE
 )
+
+pdhnbinom(
+  q,
+  theta = 0.5,
+  theta_1 = 0.1,
+  size = 0.9,
+  mu = 0.9,
+  scale = 1,
+  shape = 1,
+  lower.tail = TRUE,
+  log.p = FALSE,
+  threshold
+)
+
+rdhnbinom(
+  n,
+  theta = 0.5,
+  theta_1 = 0.1,
+  size = 0.9,
+  mu = 0.9,
+  scale = 1,
+  shape = 1,
+  threshold = 3
+)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -26,18 +52,22 @@ ddhnbinom(
 
 \item{size}{number of successes (dispersion parameter)}
 
+\item{mu}{probability of success in each trial. 0 < prob < 1}
+
+\item{scale}{scale parameter}
+
+\item{shape}{shape parameter}
+
 \item{threshold}{second hurdle}
 
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 
-\item{p}{vector of probabilities}
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
 
 \item{n}{number of observations}
 
-\item{prob}{probability of success in each trial. 0 < prob < 1}
-
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
+\item{p}{vector of probabilities}
 }
 \value{
 \code{dhnbinom} gives the density, \code{phnbinom} gives the distribution function,

@@ -3,9 +3,18 @@
 \name{ZIP}
 \alias{ZIP}
 \alias{dzip}
+\alias{pzip}
+\alias{qzip}
+\alias{rzip}
 \title{Zero-inflated Poisson Distribution}
 \usage{
 dzip(x, theta = 0.5, lambda = 1, log = FALSE)
+
+pzip(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE)
+
+qzip(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE)
+
+rzip(n, theta = 0.5, lambda = 1)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -16,12 +25,12 @@ dzip(x, theta = 0.5, lambda = 1, log = FALSE)
 
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
+
 \item{p}{vector of probabilities}
 
 \item{n}{number of observations}
-
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
 }
 \value{
 \code{dzip} gives the density, \code{pzip} gives the distribution function,

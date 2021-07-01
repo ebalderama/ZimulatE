@@ -3,9 +3,18 @@
 \name{DGP}
 \alias{DGP}
 \alias{ddgp}
+\alias{pdgp}
+\alias{qdgp}
+\alias{rdgp}
 \title{Discrete Generalized Pareto Distribution}
 \usage{
-ddgp(x, mu = 0, scale = 1, shape = 1, log = FALSE)
+ddgp(x, mu = 0, scale = 1, shape = 1)
+
+pdgp(q, mu = 0, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE)
+
+qdgp(p, mu = 0, scale = 1, shape = 1, lower.tail = TRUE, log.p = FALSE)
+
+rdgp(n, mu = 0, scale = 1, shape = 1)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -16,14 +25,14 @@ ddgp(x, mu = 0, scale = 1, shape = 1, log = FALSE)
 
 \item{shape}{shape parameter}
 
-\item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
 
 \item{p}{vector of probabilities}
 
 \item{n}{number of observations}
 
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
+\item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 }
 \value{
 \code{ddgp} gives the density, \code{pdgp} gives the distribution function,

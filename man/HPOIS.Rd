@@ -3,25 +3,31 @@
 \name{HPOIS}
 \alias{HPOIS}
 \alias{dhpois}
+\alias{phpois}
+\alias{rhpois}
 \title{Hurdle Model for Poisson Distribution}
 \usage{
 dhpois(x, theta = 0.5, lambda = 1, log = FALSE)
+
+phpois(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE)
+
+rhpois(n, theta = 0.5, lambda = 1)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
 
 \item{theta}{zero-generating parameter (probability of zeros)}
 
+\item{lambda}{expected Poisson count}
+
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 
-\item{p}{vector of probabilities}
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
 
 \item{n}{number of observations}
 
-\item{lamda}{expected Poisson count}
-
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
+\item{p}{vector of probabilities}
 }
 \value{
 \code{dhpois} gives the density, \code{phpois} gives the distribution function,

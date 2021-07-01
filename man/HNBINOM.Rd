@@ -3,9 +3,22 @@
 \name{HNBINOM}
 \alias{HNBINOM}
 \alias{dhnbinom}
+\alias{phnbinom}
+\alias{rhnbinom}
 \title{Hurdle Model for Negative Binomial Distribution}
 \usage{
 dhnbinom(x, theta = 0.5, size = 1, prob = 0.5, log = FALSE)
+
+phnbinom(
+  q,
+  theta = 0.5,
+  size = 1,
+  prob = 0.5,
+  lower.tail = TRUE,
+  log.p = FALSE
+)
+
+rhnbinom(n, theta = 0.5, size = 1, prob = 0.5)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -18,12 +31,12 @@ dhnbinom(x, theta = 0.5, size = 1, prob = 0.5, log = FALSE)
 
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 
-\item{p}{vector of probabilities}
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
 
 \item{n}{number of observations}
 
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
+\item{p}{vector of probabilities}
 }
 \value{
 \code{dhnbinom} gives the density, \code{phnbinom} gives the distribution function,

@@ -3,6 +3,8 @@
 \name{DHPOIS}
 \alias{DHPOIS}
 \alias{ddhpoisdgp}
+\alias{pdhpoisdgp}
+\alias{rdhpoisdgp}
 \title{Double-Hurdle Poisson}
 \usage{
 ddhpoisdgp(
@@ -14,11 +16,35 @@ ddhpoisdgp(
   scale = 1,
   shape = 1
 )
+
+pdhpoisdgp(
+  q,
+  theta = 0.5,
+  lambda = 1,
+  threshold = 3,
+  theta_1 = 0.1,
+  scale = 1,
+  shape = 1,
+  lower.tail = TRUE,
+  log.p = FALSE
+)
+
+rdhpoisdgp(
+  n,
+  theta = 0.5,
+  lambda = 1,
+  theta_1 = 0.1,
+  scale = 1,
+  shape = 1,
+  threshold = 3
+)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
 
 \item{theta}{zero-generating parameter (probability of zeros)}
+
+\item{threshold}{second hurdle}
 
 \item{lambda}{expected Poisson count}
 
@@ -28,14 +54,14 @@ ddhpoisdgp(
 
 \item{shape}{shape parameter}
 
-\item{p}{vector of probabilities}
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
 
 \item{n}{number of observations}
 
-\item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
+\item{p}{vector of probabilities}
 
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
+\item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 }
 \value{
 \code{ddhpoisdgp} gives the density, \code{pdhpoisdgp} gives the distribution function,

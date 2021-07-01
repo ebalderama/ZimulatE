@@ -3,9 +3,18 @@
 \name{ZINB}
 \alias{ZINB}
 \alias{dzinb}
+\alias{pzinb}
+\alias{qzinb}
+\alias{rzinb}
 \title{Zero-inflated Negative Binomial Distribution}
 \usage{
 dzinb(x, theta = 0.5, size = 1, mu = 1, log = FALSE)
+
+pzinb(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE)
+
+qzinb(p, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE)
+
+rzinb(n, theta = 0.5, size = 1, mu = 1)
 }
 \arguments{
 \item{x, q}{vector of quantiles}
@@ -18,12 +27,12 @@ dzinb(x, theta = 0.5, size = 1, mu = 1, log = FALSE)
 
 \item{log, log.p}{logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.}
 
+\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
+\code{P[X > x]}.}
+
 \item{p}{vector of probabilities}
 
 \item{n}{number of observations}
-
-\item{lower.tail}{logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
-\code{P[X > x]}.}
 }
 \value{
 \code{dzinb} gives the density, \code{pzinb} gives the distribution function,
