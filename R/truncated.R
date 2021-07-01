@@ -17,4 +17,3 @@ ptrunc <- function(x, spec, a = -Inf, b = Inf, ...) {
   tt <- tt/(G(bb, ...) - G(aa, ...))
   return(tt)
 }
-

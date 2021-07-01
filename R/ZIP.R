@@ -1,4 +1,8 @@
 #' @name ZIP
+#' @aliases dzip
+#' @aliases pzip
+#' @aliases qzip
+#' @aliases rzip
 #' @title Zero-inflated Poisson Distribution
 #' @description Density, distribution function, quantile function and random generation for the zero-inflated Poisson
 #' distribution with parameters \code{theta} and \code{lambda}.
@@ -8,13 +12,15 @@
 #' @param theta zero-inflation parameter (probability of zeros)
 #' @param lambda expected Poisson count
 #' @param log,log.p logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.
-#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
+#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
 #' \code{P[X > x]}.
 #' @return \code{dzip} gives the density, \code{pzip} gives the distribution function,
 #' \code{qzip} gives the quantile function, and \code{rzip} generates random deviates.
-#' @export dzip pzip qzip rzip
+#' @import stats
 
-# density
+#' @rdname ZIP
+#' @export
+
 dzip <-
 function(x, theta = 0.5, lambda = 1, log = FALSE) {
   tt <- rep(0, length(x))
@@ -27,7 +33,9 @@ function(x, theta = 0.5, lambda = 1, log = FALSE) {
   }
 }
 
-# cdf
+#' @rdname ZIP
+#' @export
+
 pzip <-
 function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   tt <- rep(0, length(q))
@@ -44,7 +52,9 @@ function(q, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   tt
 }
 
-# quantile
+#' @rdname ZIP
+#' @export
+
 qzip <-
 function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
   # does not yet handle multiple values of theta
@@ -64,7 +74,9 @@ function(p, theta = 0.5, lambda = 1, lower.tail = TRUE, log.p = FALSE) {
     res
 }
 
-# random generation
+#' @rdname ZIP
+#' @export
+
 rzip <-
 function(n, theta = 0.5, lambda = 1){
   zero   <- rbinom(n, 1, theta)

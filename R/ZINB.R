@@ -1,4 +1,8 @@
 #' @name ZINB
+#' @aliases dzinb
+#' @aliases pzinb
+#' @aliases qzinb
+#' @aliases rzinb
 #' @title Zero-inflated Negative Binomial Distribution
 #' @description Density, distribution function, quantile function and random generation for the zero-inflated
 #' negative binomial distribution with parameters \code{theta}, \code{size}, and \code{mu}.
@@ -9,12 +13,14 @@
 #' @param size number of successes (dispersion parameter)
 #' @param mu mean parameter (alternative parameterization)
 #' @param log,log.p logical; if TRUE, probabilities \code{p} are given as \code{log(p)}.
-#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \leq x]}, otherwise,
+#' @param lower.tail logical; if TRUE (default), probabilities are \code{P[X \%leq x]}, otherwise,
 #' \code{P[X > x]}.
 #' @return \code{dzinb} gives the density, \code{pzinb} gives the distribution function,
 #' \code{qzinb} gives the quantile function, and \code{rzinb} generates random deviates.
-#' @export dzinb pzinb qzinb rzinb
 #' @import stats
+
+#' @rdname ZINB
+#' @export
 
 dzinb <-
 function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
@@ -30,10 +36,13 @@ function(x, theta = 0.5, size = 1, mu = 1, log = FALSE) {
   }
 }
 
+#' @rdname ZINB
+#' @export
+
 pzinb <-
 function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
   tt <- rep(0, length(q))
-  tt <- theta * q + (1 - theta) * pnbinom(x, size = size, mu = mu)
+  tt <- theta * q + (1 - theta) * pnbinom(q, size = size, mu = mu)
   
   if (lower.tail) {
     tt <- 1 - tt
@@ -45,6 +54,9 @@ function(q, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
   
   tt
 }
+
+#' @rdname ZINB
+#' @export
 
 qzinb <-
 function(p, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
@@ -65,6 +77,9 @@ function(p, theta = 0.5, size = 1, mu = 1, lower.tail = TRUE, log.p = FALSE) {
   res[is.na(res)] <- 0
   res
 }
+
+#' @rdname ZINB
+#' @export
 
 rzinb <-
 function(n, theta = 0.5, size = 1, mu = 1){
