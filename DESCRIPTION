@@ -1,7 +1,7 @@
 Package: ZimulatE
 Type: Package
 Title: Simulates Zero-Inflated, Hurdle, and Double-Hurdle Models
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person("Earvin", "Balderama", role = c("aut", "cph"), email = "earvin@csufresno.edu"),
     person("Vathana", "To", role = c("aut", "cre") , email = "vathana@mail.fresnostate.edu")
