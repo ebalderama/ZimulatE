@@ -11,7 +11,7 @@ Description: Provides density, distribution, quantile, and random generation fun
 License: GPL-3 + file LICENSE
 URL: https://github.com/ebalderama/ZimulatE
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
